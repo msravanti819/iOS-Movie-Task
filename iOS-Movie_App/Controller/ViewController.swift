@@ -22,14 +22,13 @@ class ViewController: UIViewController{
     var pageNo: Int = 1
     var totalPages: Int = 1
     
-    var searchData = [MovieData.Movie]()
+    //var searchData = [MovieData.Movie]()
       //For Movie search 
 
     
     let moviemanager = MovieManager()
     
-    var data: MovieData?
-    
+    var data = [MovieData.Movie]()
     
     
     //var searchMovie = [String]()
@@ -40,31 +39,37 @@ class ViewController: UIViewController{
         collectionview.delegate = self
         collectionview.collectionViewLayout = UICollectionViewFlowLayout()
         collectionview.register(UINib(nibName: "MovieCollectionViewCell", bundle: nil), forCellWithReuseIdentifier: Constants.moviecell)
-        collectionview.backgroundColor = .white
-        view.backgroundColor = .lightGray
+//        collectionview.backgroundColor = .white
+//        view.backgroundColor = .lightGray
         moviemanager.performRequest(userpreffered: "now_playing") {
-            (Bool,data) in
+            (Bool,datach) in
             if Bool{
-                self.data = data
+                self.data = datach.results
+//                print(datach.results[0].originalTitle)
                 //self.didUpdate(data)
                 DispatchQueue.main.async {
                     self.collectionview.reloadData()
                 }
+
                 
             }
             
             
         }
+        
+        
+//        print(data[0].originalTitle)
     }
     
     
     func reinitializeData() {
-        searchData = []
+       // searchData = []
+        data = []
         totalPages = 1
         pageNo = 1
       }
     
-    
+    //later task
     @IBAction func SearchAction(_ sender: UIButton) {
     
     }
@@ -78,14 +83,14 @@ class ViewController: UIViewController{
         let topRated = UIAlertAction(title: "Top Rated", style: .default) { (action) in
             self.moviemanager.performRequest(userpreffered: "top_rated") { (Bool, data) in
                 if Bool {
-                    self.data = data
+                    self.data = data.results
                 }
             }
         }
         let nowPlaying = UIAlertAction(title: "Now Playing", style: .default) { (action) in
             self.moviemanager.performRequest(userpreffered: "now_playing") { (Bool, data) in
                 if Bool {
-                    self.data = data
+                    self.data = data.results
                 }
             }
         }
@@ -93,7 +98,7 @@ class ViewController: UIViewController{
         let upComing = UIAlertAction(title: "Upcoming", style: .default) { (action) in
             self.moviemanager.performRequest(userpreffered: "upcoming") { (Bool, data) in
                 if Bool {
-                    self.data = data
+                    self.data = data.results
                 }
             }
         }
@@ -101,7 +106,7 @@ class ViewController: UIViewController{
         let popular = UIAlertAction(title: "Popular", style: .default) { (action) in
             self.moviemanager.performRequest(userpreffered: "popular") { (Bool, data) in
                 if Bool {
-                    self.data = data
+                    self.data = data.results
                 }
             }
         }
@@ -120,25 +125,6 @@ class ViewController: UIViewController{
 
     }
     
-    
-    func didUpdate(_ result: (Result<MovieData, urlError>)) {
-        switch result{
-        case .success(let apiData, let statusCode):
-          if statusCode == 200 {
-            DispatchQueue.main.async {
-              self.searchData.append(contentsOf: apiData.results)
-                self.totalPages = apiData.totalPages!
-              self.collectionview.reloadData()
-            }
-          } else if statusCode == 404 {
-            print("page not there")
-          }
-        case .failure(let error, _):
-          print(error.localizedDescription)
-        }
-      }
-    
-    
 }
 
 
@@ -151,7 +137,7 @@ extension ViewController: UICollectionViewDataSource {
 
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         //print(data?.results.count)
-        return data?.results.count ?? 0
+        return data.count
 
     }
     
@@ -160,27 +146,41 @@ extension ViewController: UICollectionViewDataSource {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: Constants.moviecell, for: indexPath) as! MovieCollectionViewCell
         //cell.MovieName.text = "Silence"
         
-        cell.MovieName.text = data?.results[indexPath.row].title
-        guard let posterPath = data?.results[indexPath.row].posterPath else{return cell}
+        cell.MovieName.text = data[indexPath.row].title
+        guard let posterPath = data[indexPath.row].posterPath else{return cell}
             cell.MovieImage.tag = indexPath.row
         cell.MovieImage.load(url: URL(string: Constants.imageURL + posterPath)!)
         return cell
         }
     
 }
+
+//For image storing long time
+let imageCache = NSCache<NSString, UIImage>()
 extension UIImageView {
-    func load(url: URL) {
-        DispatchQueue.global().async { [weak self] in
-            if let data = try? Data(contentsOf: url) {
-                if let image = UIImage(data: data) {
-                    DispatchQueue.main.async {
-                        self?.image = image
-                    }
-                }
-            }
+  func load(url: URL) {
+    DispatchQueue.global().async { [weak self] in
+      //ImageCache Implementation
+      DispatchQueue.main.async {
+        self!.image = nil
+        if let imageFromCache = imageCache.object(forKey: url.absoluteString as NSString) {
+          self!.image = imageFromCache
+          return
         }
+      }
+      if let data = try? Data(contentsOf: url) {
+        if let image = UIImage(data: data) {
+          DispatchQueue.main.async {
+            let imageToCache = image
+            imageCache.setObject(imageToCache, forKey: url.absoluteString as NSString)
+            self!.image = image
+          }
+        }
+      }
     }
+  }
 }
+
 
 extension ViewController: UICollectionViewDelegate {
     
@@ -193,8 +193,9 @@ extension ViewController: UICollectionViewDelegate {
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         let vc = segue.destination as! MovieDetails
-        vc.name = SearchTextField.text! //for trial
-        //vc.movieDetail = searchData[cellIndex]
+//        vc.name = SearchTextField.text! //for trial
+        
+        vc.movieDetail = self.data[cellIndex]
         
         //not getting idea to pass the values
         
@@ -254,12 +255,13 @@ extension ViewController: UICollectionViewDelegateFlowLayout {
       }
       //Implementing search API
       func textFieldDidEndEditing(_ textField: UITextField) {
-        if let query = SearchTextField.text {
-          DispatchQueue.main.async {
-            self.collectionview.reloadData()
-          }
-        }
-        SearchTextField.text = ""
+//        if let query = SearchTextField.text {
+//
+//          DispatchQueue.main.async {
+//            self.collectionview.reloadData()
+//          }
+//        }
+//        SearchTextField.text = ""
       }
     
     }

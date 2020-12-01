@@ -6,21 +6,21 @@
 //
 
 import Foundation
-public struct MovieData: Codable {
-    
-    public let page: Int?
-    public let totalResults: Int?
-    public let totalPages: Int?
-    public let results: [Movie]
 
-public struct Movie: Codable {
-    
 
-    public let title: String?
-    public let posterPath: String?
-    public let overview: String?
-    public let release_date: Date?
-    public let original_title: String?
-    public let vote_average: Int?
-}
+struct MovieData: Codable {
+  var results: [Movie]
+  let page, totalResults: Int
+  let totalPages: Int
+  
+  // MARK: - Result
+  struct Movie: Codable {
+    let popularity: Double?
+    let voteCount: Int?
+    let posterPath: String?
+    let originalTitle: String?
+    let title: String?
+    let voteAverage: Double?
+    let overview, releaseDate: String?
+  }
 }

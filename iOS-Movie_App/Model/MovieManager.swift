@@ -18,13 +18,15 @@ enum urlError: Error {
   case decodeError
 }
 
+//For later task
 enum Result<T, urlError> {
   case success(T, Int?)
   case failure(urlError, Int?)
 }
+
 struct MovieManager {
 
-        func performRequest(userpreffered: String, completion: @escaping (Bool,MovieData?) -> Void) {
+    func performRequest(userpreffered: String, completion: @escaping (Bool, MovieData) -> Void) {
             
             let urlstring = "https://api.themoviedb.org/3/movie/"+userpreffered+"?api_key=\(Constants.apikey)"
             //URL created
@@ -39,14 +41,14 @@ struct MovieManager {
                     if error != nil{
                         print(error!)
     //                    self.delegate?.didFail(error: error)
-                        completion(false,nil)
+//                        completion(false,nil)
                         return
                     }
                     
                     if let safeData = data {
                        
                         if let decodedData = parseJSON(safeData) {
-                           print(decodedData)
+                          // print("Hi")
                             completion(true,decodedData)
                         }
 
@@ -74,7 +76,7 @@ struct MovieManager {
 
               
                
-            }catch{
+            } catch {
                 
                 return nil
             }

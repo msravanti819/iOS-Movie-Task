@@ -10,9 +10,9 @@ import UIKit
  
 class MovieDetails: UIViewController {
     
-    var movieDetail: MovieData?
+    var movieDetail: MovieData.Movie?
     
-    var name = " "
+   // var name = " "
    
     @IBOutlet weak var originalTitle: UILabel!
     
@@ -29,8 +29,14 @@ class MovieDetails: UIViewController {
 
     override func viewDidLoad() {
         
+        
         super.viewDidLoad()
-        overview.text = name
+        originalTitle.text = movieDetail?.originalTitle
+        overview.text = movieDetail?.overview
+        releaseDate.text = movieDetail?.releaseDate
+        userRating.text = String((movieDetail?.voteAverage)!)
+        guard let posterPath = movieDetail?.posterPath else{return}
+        moviePoster.load(url: URL(string: Constants.imageURL + posterPath)!)
         
     }
     
