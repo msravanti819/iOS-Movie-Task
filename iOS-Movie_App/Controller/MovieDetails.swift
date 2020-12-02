@@ -12,34 +12,38 @@ class MovieDetails: UIViewController {
     
     var movieDetail: MovieData.Movie?
     
-   // var name = " "
    
-    @IBOutlet weak var originalTitle: UILabel!
+   
+    
+    @IBOutlet weak var movieTitle: UILabel!
+    
     
     @IBOutlet weak var moviePoster: UIImageView!
     
+    @IBOutlet weak var movieReview: UILabel!
     
-    @IBOutlet weak var overview: UILabel!
     
+    @IBOutlet weak var movieRating: UILabel!
     
-    @IBOutlet weak var userRating: UILabel!
     
     @IBOutlet weak var releaseDate: UILabel!
     
-
+    
+    @IBOutlet weak var originalTitle: UILabel!
+    
+    
     override func viewDidLoad() {
         
-        
         super.viewDidLoad()
+        movieTitle.text = movieDetail?.title
         originalTitle.text = movieDetail?.originalTitle
-        overview.text = movieDetail?.overview
+        movieReview.text = movieDetail?.overview
         releaseDate.text = movieDetail?.releaseDate
-        userRating.text = String((movieDetail?.voteAverage)!)
+        let rating = String((movieDetail?.voteAverage)!)
+        
+        movieRating.text = Constants.ratingStar + rating + "/10"
         guard let posterPath = movieDetail?.posterPath else{return}
         moviePoster.load(url: URL(string: Constants.imageURL + posterPath)!)
         
     }
-    
-    
-    
 }
