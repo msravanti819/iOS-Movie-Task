@@ -2,6 +2,7 @@
 <document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="17156" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="6P2-77-Ihd">
     <device id="retina6_7" orientation="portrait" appearance="light"/>
     <dependencies>
+        <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="17126"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="System colors in document resources" minToolsVersion="11.0"/>
@@ -48,7 +49,8 @@
                                         <rect key="frame" x="0.0" y="0.0" width="60" height="70"/>
                                         <subviews>
                                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ZNa-mA-5o6">
-                                                <rect key="frame" x="20" y="18" width="30" height="34"/>
+                                                <rect key="frame" x="20" y="17" width="30" height="36"/>
+                                                <fontDescription key="fontDescription" type="system" pointSize="20"/>
                                                 <state key="normal" title="..."/>
                                                 <connections>
                                                     <action selector="optionButtonPressed:" destination="BYZ-38-t0r" eventType="touchUpInside" id="OIK-2U-9du"/>
@@ -124,7 +126,7 @@
         <!--MovieDetailsViewController-->
         <scene sceneID="3lE-YX-TaE">
             <objects>
-                <viewController title="MovieDetailsViewController" id="vI4-pL-JHS" customClass="MovieDetails" customModule="iOS_Movie_App" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="MovieDetails" title="MovieDetailsViewController" id="vI4-pL-JHS" customClass="MovieDetails" customModule="iOS_Movie_App" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="4EM-hN-F77">
                         <rect key="frame" x="0.0" y="0.0" width="428" height="926"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>

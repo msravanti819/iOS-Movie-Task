@@ -12,9 +12,9 @@ struct MovieData: Codable {
   var results: [Movie]
   let page, totalResults: Int
   let totalPages: Int
-  
+
   // MARK: - Result
-  struct Movie: Codable {
+   struct Movie: Codable {
     let popularity: Double?
     let voteCount: Int?
     let posterPath: String?

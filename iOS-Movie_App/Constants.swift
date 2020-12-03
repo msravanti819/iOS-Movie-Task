@@ -16,6 +16,9 @@ struct Constants {
     static var completeURL = "https://api.themoviedb.org/3/movie/now_playing?api_key=196dcfe9922c74f15d7256e7ce02ddfc3" // For Now Playing
     static let ratingStar = "⭐️"
     static let segueIdentifier = "movieToDetails"
+    struct  Controllers {
+        static let MovieDetails = "MovieDetails"
+    }
 }
 
 
