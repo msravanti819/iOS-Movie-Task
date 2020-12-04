@@ -7,13 +7,13 @@
 //
 
 import UIKit
-
 class ViewController: UIViewController {
-
+    
     @IBOutlet weak var collectionview: UICollectionView!
     @IBOutlet weak var searchTextField: UITextField!
     @IBOutlet weak var searchButton: UIButton!
     @IBOutlet weak var OptionButton: UIButton!
+    
     var cellIndex = 0
     var pageNo: Int = 1
     var totalPages: Int = 1  //By default for Now Playing
@@ -34,10 +34,11 @@ class ViewController: UIViewController {
        view.addSubview(activityIndicator)
        activityIndicator.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
        activityIndicator.centerYAnchor.constraint(equalTo: view.centerYAnchor).isActive = true
-       moviemanager.performRequest(userpreffered: "now_playing" , page: pageNo) {
+        moviemanager.performRequest(userpreffered: "now_playing" , page: pageNo) {
             (Bool,datach) in
             if Bool {
                 self.data = datach
+                //self.arrayOfMovieData.append(datach)
                 self.totalPages = datach.totalPages
                 DispatchQueue.main.async {
                     self.activityIndicator.stopAnimating()
@@ -116,11 +117,8 @@ extension ViewController: UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
             //let row = articles[indexPath.row];
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: Constants.moviecell, for: indexPath) as! MovieCollectionViewCell
-        
         cell.contentView.addSubview(activityIndicator)//Activity Indicator started
         activityIndicator.startAnimating()
-        
-        
         cell.MovieName.text = data?.results[indexPath.row].title//data[indexPath.row].title
         guard let posterPath = data?.results[indexPath.row].posterPath else{return cell}
         cell.MovieImage.tag = indexPath.row
@@ -128,7 +126,6 @@ extension ViewController: UICollectionViewDataSource {
         return cell
         }
 }
-
 //For image storing long time
 let imageCache = NSCache<NSString, UIImage>()
 extension UIImageView {
@@ -179,14 +176,13 @@ extension ViewController: UICollectionViewDelegate {
         moviemanager.performRequest(userpreffered: "now_playing", page: pageNo) { (Bool, datach) in
             if Bool {
                 self.data = datach
-                //let indexPath = IndexPath(indexes: [index...(data?.results.count)!]) for trial
+                //self.arrayOfMovieData.append(datach)
                 DispatchQueue.main.async {
                     self.collectionview.reloadData()
                     //with this images are loading very fast
                 }
             }
         }
-       // print("page count after changing page = ",data?.results.count!)
     }
 }
 
@@ -234,7 +230,6 @@ extension ViewController: UICollectionViewDelegateFlowLayout {
            // self.reinitializeData()
         searchTextField.text = ""
       }
-    
     }
 
 

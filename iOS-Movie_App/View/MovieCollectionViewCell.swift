@@ -9,14 +9,15 @@ import UIKit
 
 class MovieCollectionViewCell: UICollectionViewCell {
 
-    
     @IBOutlet weak var MovieImage: UIImageView!
-    
     @IBOutlet weak var MovieName: UILabel!
     
     override func awakeFromNib() {
         super.awakeFromNib()
-        
     }
-
+    
+    override func prepareForReuse() {
+        super.prepareForReuse()
+        MovieImage.image = nil
+    }
 }

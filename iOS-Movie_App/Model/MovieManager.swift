@@ -6,34 +6,34 @@
 //
 
 import Foundation
-enum urlError: Error {
-  case httpError(code: String)
-  case noData
-  case other
-  case apiError
-  case invalidEndpoint
-  case invalidResponse
-  case decodeError
-}
+//enum urlError: Error {
+//  case httpError(code: String)
+//  case noData
+//  case other
+//  case apiError
+//  case invalidEndpoint
+//  case invalidResponse
+//  case decodeError
+//}
+
 //For later task
-enum Result<T, urlError> {
-  case success(T, Int?)
-  case failure(urlError, Int?)
-}
+//enum Result<T, urlError> {
+//  case success(T, Int?)
+//  case failure(urlError, Int?)
+//}
 
 struct MovieManager {
 
 func performRequest(userpreffered: String,page: Int, completion: @escaping (Bool, MovieData) -> Void) {
+
   let urlstring =   "https://api.themoviedb.org/3/movie/"+userpreffered+"?api_key=\(Constants.apikey)&page=\(page)"
             //URL created
   if let url = URL(string: urlstring) {
-            
                 //URL Session created
    let session = URLSession(configuration: .default)
                 //create a URLSession Task or give a session task
     let task = session.dataTask(with: url) { (data, response, error) in //Anonymous function
      if error != nil {
-    // completion(false, nil)
        return
         }
    if let safeData = data {
