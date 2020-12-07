@@ -9,7 +9,7 @@ import Foundation
 import UIKit
  
 class MovieDetails: UIViewController{
-    var movieDetail: Movie? //Creating object for Movie through MovieData structure
+    var movieDetail: MovieData.Movie? //Creating object for Movie through MovieData structure
    
     @IBOutlet weak var movieTitle: UILabel!
     @IBOutlet weak var moviePoster: UIImageView!
@@ -20,13 +20,15 @@ class MovieDetails: UIViewController{
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        movieTitle.text = movieDetail?.title
-        originalTitle.text = movieDetail?.originalTitle
-        movieReview.text = movieDetail?.overview
-        releaseDate.text = movieDetail?.releaseDate
-        let rating = String((movieDetail?.voteAverage)!)
+        guard let movieDetail = movieDetail else {return}
+        
+        movieTitle.text = movieDetail.title
+        originalTitle.text = movieDetail.originalTitle
+        movieReview.text = movieDetail.overview
+        releaseDate.text = movieDetail.releaseDate
+        let rating = String((movieDetail.voteAverage)!)
         movieRating.text = Constants.ratingStar + rating + "/10"
-        guard let posterPath = movieDetail?.posterPath else{return}
+        guard let posterPath = movieDetail.posterPath else{return}
         moviePoster.load(url: URL(string: Constants.imageURL + posterPath)!)
     }
 }
