@@ -10,9 +10,8 @@ import UIKit
 class ViewController: UIViewController {
     
     @IBOutlet weak var collectionview: UICollectionView!
-    @IBOutlet weak var searchTextField: UITextField!
-    @IBOutlet weak var searchButton: UIButton!
-    @IBOutlet weak var OptionButton: UIButton!
+    
+    @IBOutlet weak var searchLabel: UISearchBar!
     
     var cellIndex = 0
     var pageNo: Int = 1
@@ -26,7 +25,6 @@ class ViewController: UIViewController {
         super.viewDidLoad()
         collectionview.dataSource = self
         collectionview.delegate = self
-        searchTextField.delegate = self
         collectionview.collectionViewLayout = UICollectionViewFlowLayout()
         collectionview.register(UINib(nibName: "MovieCollectionViewCell", bundle: nil), forCellWithReuseIdentifier: Constants.moviecell)
 //        collectionview.backgroundColor = .white
@@ -64,55 +62,55 @@ class ViewController: UIViewController {
       }
     
     //API call for search Query
-    @IBAction func SearchAction(_ sender: UIButton) {
-       reinitializeData()
-        moviemanager.fetchDataForQuery(query: searchTextField.text!, page: pageNo) { (Bool, data) in
-            self.data.append(contentsOf: data.results)
-            DispatchQueue.main.async {
-                self.collectionview.reloadData()
-            }
-        }
-    }
-    //Option Given to user
-    @IBAction func optionButtonPressed(_ sender: UIButton) {
-        //Shows options for movie list
-        let alert = UIAlertController(title: "Select Options", message: "", preferredStyle: .alert)
-        let topRated = UIAlertAction(title: "Top Rated", style: .default) { (action) in
-            self.optionCall(option: "top_rated")
-        }
-        let nowPlaying = UIAlertAction(title: "Now Playing", style: .default) { (action) in
-            self.optionCall(option: "now_playing")
-        }
-        
-        let upComing = UIAlertAction(title: "Upcoming", style: .default) { (action) in
-            self.optionCall(option: "upcoming")
-        }
-        
-        let popular = UIAlertAction(title: "Popular", style: .default) { (action) in
-            self.optionCall(option: "popular")
-        }
-        
-        let cancel = UIAlertAction(title: "Cancel", style: .cancel)
-        //User to operate
-        alert.addAction(topRated)
-        alert.addAction(popular)
-        alert.addAction(nowPlaying)
-        alert.addAction(upComing)
-        alert.addAction(cancel)
-        present(alert, animated: true, completion: nil)
-    }
-    //For calling common function
-    func optionCall(option: String) {
-        reinitializeData()
-        moviemanager.performRequest(userpreffered: option, page: pageNo) { (Bool, data) in
-            if Bool {
-                self.data.append(contentsOf: data.results)
-    
-                    self.totalPages = data.totalPages
-                    print("totalPages = ",self.totalPages)
-                }
-        }
-    }
+//    @IBAction func SearchAction(_ sender: UIButton) {
+//       reinitializeData()
+//        moviemanager.fetchDataForQuery(query: searchTextField.text!, page: pageNo) { (Bool, data) in
+//            self.data.append(contentsOf: data.results)
+//            DispatchQueue.main.async {
+//                self.collectionview.reloadData()
+//            }
+//        }
+//    }
+//    //Option Given to user
+//    @IBAction func optionButtonPressed(_ sender: UIButton) {
+//        //Shows options for movie list
+//        let alert = UIAlertController(title: "Select Options", message: "", preferredStyle: .alert)
+//        let topRated = UIAlertAction(title: "Top Rated", style: .default) { (action) in
+//            self.optionCall(option: "top_rated")
+//        }
+//        let nowPlaying = UIAlertAction(title: "Now Playing", style: .default) { (action) in
+//            self.optionCall(option: "now_playing")
+//        }
+//
+//        let upComing = UIAlertAction(title: "Upcoming", style: .default) { (action) in
+//            self.optionCall(option: "upcoming")
+//        }
+//
+//        let popular = UIAlertAction(title: "Popular", style: .default) { (action) in
+//            self.optionCall(option: "popular")
+//        }
+//
+//        let cancel = UIAlertAction(title: "Cancel", style: .cancel)
+//        //User to operate
+//        alert.addAction(topRated)
+//        alert.addAction(popular)
+//        alert.addAction(nowPlaying)
+//        alert.addAction(upComing)
+//        alert.addAction(cancel)
+//        present(alert, animated: true, completion: nil)
+//    }
+//    //For calling common function
+//    func optionCall(option: String) {
+//        reinitializeData()
+//        moviemanager.performRequest(userpreffered: option, page: pageNo) { (Bool, data) in
+//            if Bool {
+//                self.data.append(contentsOf: data.results)
+//
+//                    self.totalPages = data.totalPages
+//                    print("totalPages = ",self.totalPages)
+//                }
+//        }
+//    }
     func didUpdate(datach: MovieData?) {
         self.data.append(contentsOf: datach?.results ?? data)
         self.totalPages = datach!.totalPages
@@ -219,22 +217,22 @@ extension ViewController: UICollectionViewDelegateFlowLayout {
     }
 
 //MARK: - TextfieldDelegate
-    extension ViewController: UITextFieldDelegate {
-      func textFieldShouldReturn(_ textField: UITextField) -> Bool {
-        searchTextField.endEditing(true)
-        return true
-      }
-      func textFieldShouldEndEditing(_ textField: UITextField) -> Bool {
-        if textField.text != "" {
-          return true
-        } else {
-          return false
-        }
-      }
-      func textFieldDidEndEditing(_ textField: UITextField) {
-        searchTextField.text = ""
-      }
-    }
+//    extension ViewController: UITextFieldDelegate {
+//      func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+//        searchTextField.endEditing(true)
+//        return true
+//      }
+//      func textFieldShouldEndEditing(_ textField: UITextField) -> Bool {
+//        if textField.text != "" {
+//          return true
+//        } else {
+//          return false
+//        }
+//      }
+//      func textFieldDidEndEditing(_ textField: UITextField) {
+//        searchTextField.text = ""
+//      }
+//    }
 
 
 
