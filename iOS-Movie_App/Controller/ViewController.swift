@@ -19,6 +19,8 @@ class ViewController: UIViewController {
     var totalPages: Int = 1  //By default for Now Playing
     let moviemanager = MovieManager()
     var data: MovieData?
+    //var dataArray = [MovieData]()  //For movie array trial
+    var previousLoadedPage = UserDefaults.standard.string(forKey: "previousPage")
     var activityIndicator = UIActivityIndicatorView(style: .large) //Activity Indicator for start and stop
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -34,11 +36,11 @@ class ViewController: UIViewController {
        view.addSubview(activityIndicator)
        activityIndicator.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
        activityIndicator.centerYAnchor.constraint(equalTo: view.centerYAnchor).isActive = true
-        moviemanager.performRequest(userpreffered: "now_playing" , page: pageNo) {
+        moviemanager.performRequest(userpreffered: "top_rated" , page: pageNo) {
             (Bool,datach) in
             if Bool {
                 self.data = datach
-                //self.arrayOfMovieData.append(datach)
+                //self.dataArray.append(datach)  //Appending data to array for trial
                 self.totalPages = datach.totalPages
                 DispatchQueue.main.async {
                     self.activityIndicator.stopAnimating()
@@ -50,7 +52,7 @@ class ViewController: UIViewController {
         }
     }
     func reinitializeData() {
-        //data = []
+        data = nil
         totalPages = 1
         pageNo = 1
       }
@@ -60,6 +62,7 @@ class ViewController: UIViewController {
        reinitializeData()
         moviemanager.fetchDataForQuery(query: searchTextField.text!, page: pageNo) { (Bool, data) in
             self.data = data
+            //self.dataArray.append(data) //For trial
             DispatchQueue.main.async {
                 self.collectionview.reloadData()
             }
@@ -71,17 +74,21 @@ class ViewController: UIViewController {
         let alert = UIAlertController(title: "Select Options", message: "", preferredStyle: .alert)
         let topRated = UIAlertAction(title: "Top Rated", style: .default) { (action) in
             self.optionCall(option: "top_rated")
+            UserDefaults.standard.setValue("top_rated", forKey: "previousPage")
         }
         let nowPlaying = UIAlertAction(title: "Now Playing", style: .default) { (action) in
             self.optionCall(option: "now_playing")
+            UserDefaults.standard.setValue("now_playing", forKey: "previousPage")
         }
         
         let upComing = UIAlertAction(title: "Upcoming", style: .default) { (action) in
+            UserDefaults.standard.setValue("upcoming", forKey: "previousPage")
             self.optionCall(option: "upcoming")
         }
         
         let popular = UIAlertAction(title: "Popular", style: .default) { (action) in
             self.optionCall(option: "popular")
+            UserDefaults.standard.setValue("popular", forKey: "previousPage")
         }
         
         let cancel = UIAlertAction(title: "Cancel", style: .cancel)
@@ -99,6 +106,7 @@ class ViewController: UIViewController {
         moviemanager.performRequest(userpreffered: option, page: pageNo) { (Bool, data) in
             if Bool {
                                 self.data = data
+                              //self.dataArray.append(data)
                                 self.totalPages = data.totalPages
                                 print("totalPages = ",self.totalPages)
                 }
@@ -109,10 +117,7 @@ extension ViewController: UICollectionViewDataSource {
    
     //MARK: - DataSource Methods
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        //print(data?.results.count)
-        //print(data.count)
-        return data?.results.count ?? 0  //data?.count
-
+          return data?.results.count ?? 0//data?.count
     }
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
             //let row = articles[indexPath.row];
@@ -173,13 +178,11 @@ extension ViewController: UICollectionViewDelegate {
         } else {
           return
         }
-        moviemanager.performRequest(userpreffered: "now_playing", page: pageNo) { (Bool, datach) in
+        moviemanager.performRequest(userpreffered: "top_rated", page: pageNo) { (Bool, datach) in
             if Bool {
                 self.data = datach
-                //self.arrayOfMovieData.append(datach)
                 DispatchQueue.main.async {
-                    self.collectionview.reloadData()
-                    //with this images are loading very fast
+                    self.collectionview.reloadData() //with this images are loading very fast
                 }
             }
         }
