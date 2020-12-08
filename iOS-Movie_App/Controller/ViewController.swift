@@ -19,10 +19,9 @@ class ViewController: UIViewController {
     var totalPages: Int = 1
     let moviemanager = MovieManager()
     var data = [Movie]()
-    var activityIndicator = UIActivityIndicatorView(style: .large) //Acxti
+    var activityIndicator = UIActivityIndicatorView(style: .large) //Activity Indicator
     
     override func viewDidLoad() {
-        //temp branch
         super.viewDidLoad()
         title = "MovieApp"
         collectionview.dataSource = self
