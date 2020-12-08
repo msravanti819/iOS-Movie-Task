@@ -9,8 +9,9 @@ import Foundation
 import UIKit
  
 class MovieDetails: UIViewController{
-    var movieDetail: MovieData.Movie? //Creating object for Movie through MovieData structure
-   
+    
+    var movieDetail: Movie? //Creating object for Movie
+    
     @IBOutlet weak var movieTitle: UILabel!
     @IBOutlet weak var moviePoster: UIImageView!
     @IBOutlet weak var movieReview: UILabel!

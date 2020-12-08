@@ -6,22 +6,6 @@
 //
 
 import Foundation
-//enum urlError: Error {
-//  case httpError(code: String)
-//  case noData
-//  case other
-//  case apiError
-//  case invalidEndpoint
-//  case invalidResponse
-//  case decodeError
-//}
-
-//For later task
-//enum Result<T, urlError> {
-//  case success(T, Int?)
-//  case failure(urlError, Int?)
-//}
-
 struct MovieManager {
 
 func performRequest(userpreffered: String,page: Int, completion: @escaping (Bool, MovieData) -> Void) {
