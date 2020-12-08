@@ -22,6 +22,7 @@ class ViewController: UIViewController {
     var activityIndicator = UIActivityIndicatorView(style: .large) //Acxti
     
     override func viewDidLoad() {
+        //temp branch
         super.viewDidLoad()
         title = "MovieApp"
         collectionview.dataSource = self
