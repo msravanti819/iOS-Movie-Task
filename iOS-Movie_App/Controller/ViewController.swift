@@ -19,7 +19,7 @@ class ViewController: UIViewController {
     var totalPages: Int = 1
     let moviemanager = MovieManager()
     var data = [Movie]()
-    var activityIndicator = UIActivityIndicatorView(style: .large) 
+    var activityIndicator = UIActivityIndicatorView(style: .large) //Acxti
     
     override func viewDidLoad() {
         super.viewDidLoad()
