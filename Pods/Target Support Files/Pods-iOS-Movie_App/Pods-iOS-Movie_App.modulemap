@@ -1,6 +1,0 @@
-module Pods_iOS_Movie_App {
-  umbrella header "Pods-iOS-Movie_App-umbrella.h"
-
-  export *
-  module * { export * }
-}
