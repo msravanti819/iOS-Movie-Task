@@ -51,6 +51,7 @@ func performRequest(userpreffered: String,page: Int, completion: @escaping (Bool
         task.resume()//Start the task from suspended mode
         }
     }
+    
     //parseJSON calling for loading movie and also for query on textfield
         func parseJSON(_ movieData: Data) -> MovieData? {
             let decoder = JSONDecoder()

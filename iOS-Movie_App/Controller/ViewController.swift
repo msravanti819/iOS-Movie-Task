@@ -7,25 +7,27 @@
 //
 
 import UIKit
-class ViewController: UIViewController {
-    
+class ViewController: UIViewController{
     @IBOutlet weak var collectionview: UICollectionView!
-    @IBOutlet weak var filterOption: UIButton!
-    @IBOutlet weak var searchTextField: UITextField!
-    @IBOutlet weak var searchLabel: UIButton!
-    
+
     var cellIndex = 0
     var pageNo: Int = 1
     var totalPages: Int = 1
     let moviemanager = MovieManager()
     var data = [Movie]()
-    var activityIndicator = UIActivityIndicatorView(style: .large) //Activity Indicator
+    var activityIndicator = UIActivityIndicatorView(style: .large)//Activity Indicator
+    var searchData = [Movie]()
+    var searchActive : Bool = false
+    let searchController = UISearchController(searchResultsController: nil)
     
     override func viewDidLoad() {
         super.viewDidLoad()
         title = "MovieApp"
         collectionview.dataSource = self
         collectionview.delegate = self
+        navigationItem.searchController = searchController
+        searchController.searchBar.delegate = self
+        searchController.searchBar.becomeFirstResponder()
         collectionview.collectionViewLayout = UICollectionViewFlowLayout()
         collectionview.register(UINib(nibName: "MovieCollectionViewCell", bundle: nil), forCellWithReuseIdentifier: Constants.moviecell)
         activityIndicator.startAnimating()
@@ -39,7 +41,6 @@ class ViewController: UIViewController {
     }
     
     func updateData(userString: String, page: Int) {
-        
         moviemanager.performRequest(userpreffered: userString, page: pageNo) { (Bool, datach) in
             if Bool {
                 let lastIndex = self.data.count
@@ -62,67 +63,72 @@ class ViewController: UIViewController {
       }
     
     @IBAction func filterButtonPressed(_ sender: UIButton) {
-        //Shows options for movie list
-                let alert = UIAlertController(title: "Select Options", message: "", preferredStyle: .alert)
-                let topRated = UIAlertAction(title: "Top Rated", style: .default) { (action) in
-                    UserDefaults.standard.setValue("top_rated", forKey: "Last Filter Order")
-                    self.optionCall(option: "top_rated")
-                }
-                let nowPlaying = UIAlertAction(title: "Now Playing", style: .default) { (action) in
-                    UserDefaults.standard.setValue("now_playing", forKey: "Last Filter Order")
-                    self.optionCall(option: "now_playing")
-                }
+        let alert = UIAlertController(title: "Select Options", message: "", preferredStyle: .alert)
+                        let topRated = UIAlertAction(title: "Top Rated", style: .default) { (action) in
+                            UserDefaults.standard.setValue("top_rated", forKey: "Last Filter Order")
+                            self.optionCall(option: "top_rated")
+                        }
+                        let nowPlaying = UIAlertAction(title: "Now Playing", style: .default) { (action) in
+                            UserDefaults.standard.setValue("now_playing", forKey: "Last Filter Order")
+                            self.optionCall(option: "now_playing")
+                        }
         
-                let upComing = UIAlertAction(title: "Upcoming", style: .default) { (action) in
-                    UserDefaults.standard.setValue("upcoming", forKey: "Last Filter Order")
-                    self.optionCall(option: "upcoming")
-                }
+                        let upComing = UIAlertAction(title: "Upcoming", style: .default) { (action) in
+                            UserDefaults.standard.setValue("upcoming", forKey: "Last Filter Order")
+                            self.optionCall(option: "upcoming")
+                        }
         
-                let popular = UIAlertAction(title: "Popular", style: .default) { (action) in
-                    UserDefaults.standard.setValue("popular", forKey: "Last Filter Order")
-                    self.optionCall(option: "popular")
-                }
+                        let popular = UIAlertAction(title: "Popular", style: .default) { (action) in
+                            UserDefaults.standard.setValue("popular", forKey: "Last Filter Order")
+                            self.optionCall(option: "popular")
+                        }
         
-                let cancel = UIAlertAction(title: "Cancel", style: .cancel)
-                //User to operate
-                alert.addAction(topRated)
-                alert.addAction(popular)
-                alert.addAction(nowPlaying)
-                alert.addAction(upComing)
-                alert.addAction(cancel)
-                present(alert, animated: true, completion: nil)
-            }
-            //For calling common function
+                        let cancel = UIAlertAction(title: "Cancel", style: .cancel)
+                        //User to operate
+                        alert.addAction(topRated)
+                        alert.addAction(popular)
+                        alert.addAction(nowPlaying)
+                        alert.addAction(upComing)
+                        alert.addAction(cancel)
+                        present(alert, animated: true, completion: nil)
+    }
+    
+                  //For calling common function
             func optionCall(option: String?) {
                 reinitializeData()
                 updateData(userString: option ?? "top_rated", page: pageNo)
     }
-    
-    //API call for search Query
-    @IBAction func searchButtonPressed(_ sender: UIButton) {
-        reinitializeData()
-            moviemanager.fetchDataForQuery(query: searchTextField.text!, page: pageNo) { (Bool, data) in
-                    self.data.append(contentsOf: data.results)
-                    DispatchQueue.main.async {
-                        self.collectionview.reloadData()
-                    }
-              }
-       }
 }
+    
 extension ViewController: UICollectionViewDataSource {
    
     //MARK: - DataSource Methods
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return data.count
+        //return data.count
+        if searchActive {
+            return searchData.count
+        }else {
+            return data.count
+        }
     }
+    
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: Constants.moviecell, for: indexPath) as? MovieCollectionViewCell else {return UICollectionViewCell()}
+        if searchActive {
+            cell.contentView.addSubview(activityIndicator)//Activity Indicator started
+            activityIndicator.startAnimating()
+            cell.MovieName.text = searchData[indexPath.row].title
+            guard let posterPath = searchData[indexPath.row].posterPath else{return cell}
+            cell.MovieImage.tag = indexPath.row
+            cell.MovieImage.load(url: URL(string: Constants.imageURL + posterPath)!)
+        }else {
         cell.contentView.addSubview(activityIndicator)//Activity Indicator started
         activityIndicator.startAnimating()
         cell.MovieName.text = data[indexPath.row].title
         guard let posterPath = data[indexPath.row].posterPath else{return cell}
         cell.MovieImage.tag = indexPath.row
         cell.MovieImage.load(url: URL(string: Constants.imageURL + posterPath)!)
+        }
         return cell
         }
 }
@@ -191,7 +197,6 @@ extension ViewController: UICollectionViewDelegateFlowLayout {
             + (flowLayout.minimumInteritemSpacing * CGFloat(noOfCellsInRow - 1))
         let size = Int((collectionView.bounds.width - totalSpace) / CGFloat(noOfCellsInRow))
         return CGSize(width: size, height: size+150)
-        
     }
 
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAt section: Int) -> UIEdgeInsets {
@@ -208,25 +213,42 @@ extension ViewController: UICollectionViewDelegateFlowLayout {
     
     }
 
-//MARK: - TextfieldDelegate
-    extension ViewController: UITextFieldDelegate {
-      func textFieldShouldReturn(_ textField: UITextField) -> Bool {
-        searchTextField.endEditing(true)
+//MARK: - UISearchControllerDelegate
+//API call for search Query
+extension ViewController:  UISearchBarDelegate{
+    func searchBarShouldBeginEditing(_ searchBar: UISearchBar) -> Bool {
+        self.collectionview.isHidden = true
+        print(#function)
         return true
-      }
-      func textFieldShouldEndEditing(_ textField: UITextField) -> Bool {
-        if textField.text != "" {
-          return true
-        } else {
-          return false
-        }
-      }
-      func textFieldDidEndEditing(_ textField: UITextField) {
-        searchTextField.text = ""
-      }
     }
+    
+    func searchBarTextDidBeginEditing(_ searchBar: UISearchBar) {
+            searchActive = true
+            collectionview.reloadData()
+        }
 
-
+    func searchBarTextDidEndEditing(_ searchBar: UISearchBar) {
+        print(#function)
+       pageNo = 1
+       activityIndicator.startAnimating()
+       guard let searchName = searchBar.text else {return}
+       moviemanager.fetchDataForQuery(query: searchName, page: pageNo) { (Bool, data) in
+       self.searchData.append(contentsOf: data.results)
+            DispatchQueue.main.async {
+                self.collectionview.isHidden = false
+                self.collectionview.reloadData()
+                }
+           }
+    }
+    func searchBarShouldEndEditing(_ searchBar: UISearchBar) -> Bool {
+        if searchBar.text != "" {
+            self.collectionview.reloadData()
+            return true
+        }else {
+            return false
+        }
+    }
+}
 
     
     
