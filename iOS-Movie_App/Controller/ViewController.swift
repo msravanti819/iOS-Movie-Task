@@ -7,6 +7,9 @@
 //
 
 import UIKit
+//import CoreData
+import CoreData
+
 class ViewController: UIViewController{
     @IBOutlet weak var collectionview: UICollectionView!
 
@@ -17,8 +20,10 @@ class ViewController: UIViewController{
     var data = [Movie]()
     var activityIndicator = UIActivityIndicatorView(style: .large)//Activity Indicator
     var searchData = [Movie]()
+    var itemArr = [String]()
     var searchActive : Bool = false
     let searchController = UISearchController(searchResultsController: nil)
+    //var recentSearches = [RecentSearch]()
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -45,7 +50,7 @@ class ViewController: UIViewController{
             if Bool {
                 let lastIndex = self.data.count
                 self.data.append(contentsOf: datach.results)
-                self.totalPages = datach.totalPages
+                self.totalPages = datach.totalPages!
                     let indexPath: [IndexPath] = (0...19).map {IndexPath(row: lastIndex + $0, section: 0)}
                     DispatchQueue.main.async {
                      self.activityIndicator.stopAnimating()
@@ -105,30 +110,31 @@ extension ViewController: UICollectionViewDataSource {
     //MARK: - DataSource Methods
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         //return data.count
-        if searchActive {
-            return searchData.count
-        }else {
-            return data.count
-        }
+//        if searchActive {
+//            return searchData.count
+//        }else {
+//            return data.count
+//        }
+        return data.count
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: Constants.moviecell, for: indexPath) as? MovieCollectionViewCell else {return UICollectionViewCell()}
-        if searchActive {
-            cell.contentView.addSubview(activityIndicator)//Activity Indicator started
-            activityIndicator.startAnimating()
-            cell.MovieName.text = searchData[indexPath.row].title
-            guard let posterPath = searchData[indexPath.row].posterPath else{return cell}
-            cell.MovieImage.tag = indexPath.row
-            cell.MovieImage.load(url: URL(string: Constants.imageURL + posterPath)!)
-        }else {
+//        if searchActive {
+//            cell.contentView.addSubview(activityIndicator)//Activity Indicator started
+//            activityIndicator.startAnimating()
+//            cell.MovieName.text = searchData[indexPath.row].title
+//            guard let posterPath = searchData[indexPath.row].posterPath else{return cell}
+//            cell.MovieImage.tag = indexPath.row
+//            cell.MovieImage.load(url: URL(string: Constants.imageURL + posterPath)!)
+//        }else {
         cell.contentView.addSubview(activityIndicator)//Activity Indicator started
         activityIndicator.startAnimating()
         cell.MovieName.text = data[indexPath.row].title
         guard let posterPath = data[indexPath.row].posterPath else{return cell}
         cell.MovieImage.tag = indexPath.row
         cell.MovieImage.load(url: URL(string: Constants.imageURL + posterPath)!)
-        }
+        //}
         return cell
         }
 }
@@ -217,37 +223,55 @@ extension ViewController: UICollectionViewDelegateFlowLayout {
 //API call for search Query
 extension ViewController:  UISearchBarDelegate{
     func searchBarShouldBeginEditing(_ searchBar: UISearchBar) -> Bool {
-        self.collectionview.isHidden = true
+        //self.collectionview.isHidden = true
+        //searchActive = true
         print(#function)
         return true
     }
     
     func searchBarTextDidBeginEditing(_ searchBar: UISearchBar) {
+        print(#function)
             searchActive = true
             collectionview.reloadData()
         }
 
     func searchBarTextDidEndEditing(_ searchBar: UISearchBar) {
         print(#function)
-       pageNo = 1
+       //pageNo = 1
+        reinitializeData()
        activityIndicator.startAnimating()
        guard let searchName = searchBar.text else {return}
        moviemanager.fetchDataForQuery(query: searchName, page: pageNo) { (Bool, data) in
-       self.searchData.append(contentsOf: data.results)
+       //self.searchData.append(contentsOf: data.results)
+        //print(data)
+        self.data.append(contentsOf: data.results)
             DispatchQueue.main.async {
-                self.collectionview.isHidden = false
+                //self.collectionview.isHidden = false
                 self.collectionview.reloadData()
                 }
            }
     }
     func searchBarShouldEndEditing(_ searchBar: UISearchBar) -> Bool {
         if searchBar.text != "" {
-            self.collectionview.reloadData()
+          self.collectionview.reloadData()
             return true
         }else {
             return false
         }
     }
+    func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {
+        
+        print(searchBar.text!)
+    }
+    func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
+        if searchBar.text?.count == 0 {
+            DispatchQueue.main.async {
+                self.collectionview.reloadData()
+            }
+        }
+    }
+    
+    
 }
 
     

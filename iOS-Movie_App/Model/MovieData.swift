@@ -10,10 +10,10 @@ import Foundation
 
 struct MovieData: Codable {
   var results: [Movie]
-  let page, totalResults: Int
-  let totalPages: Int
+  let page, totalResults: Int?
+  let totalPages: Int?
 }
-  // MARK: - Movie
+//  // MARK: - Movie
    struct Movie: Codable {
     let popularity: Double?
     let voteCount: Int?
@@ -22,6 +22,6 @@ struct MovieData: Codable {
     let title: String?
     let voteAverage: Double?
     let overview, releaseDate: String?
-  
+
 }
 

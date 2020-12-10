@@ -27,7 +27,7 @@ class MovieDetails: UIViewController{
         originalTitle.text = movieDetail.originalTitle
         movieReview.text = movieDetail.overview
         releaseDate.text = movieDetail.releaseDate
-        let rating = String((movieDetail.voteAverage)!)
+        let rating = String((movieDetail.voteAverage!))
         movieRating.text = Constants.ratingStar + rating + "/10"
         guard let posterPath = movieDetail.posterPath else{return}
         moviePoster.load(url: URL(string: Constants.imageURL + posterPath)!)
