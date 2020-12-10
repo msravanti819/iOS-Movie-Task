@@ -34,7 +34,7 @@ class ViewController: UIViewController {
         activityIndicator.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
         activityIndicator.centerYAnchor.constraint(equalTo: view.centerYAnchor).isActive = true
         let lastFilterOrder = UserDefaults.standard.string(forKey: "Last Filter Order")
-        updateData(userString: "top_rated", page: pageNo)
+        updateData(userString: lastFilterOrder ?? "top", page: pageNo)
         optionCall(option: lastFilterOrder)
     }
     
@@ -49,7 +49,7 @@ class ViewController: UIViewController {
                     DispatchQueue.main.async {
                      self.activityIndicator.stopAnimating()
                      self.collectionview.insertItems(at: indexPath)
-                     self.collectionview.reloadItems(at: indexPath)
+                     //self.collectionview.reloadItems(at: indexPath)
               }
            }
         }
@@ -116,7 +116,8 @@ extension ViewController: UICollectionViewDataSource {
         return data.count
     }
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: Constants.moviecell, for: indexPath) as? MovieCollectionViewCell else {return UICollectionViewCell()}
+        guard
+            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: Constants.moviecell, for: indexPath) as? MovieCollectionViewCell else {return UICollectionViewCell()}
         cell.contentView.addSubview(activityIndicator)//Activity Indicator started
         activityIndicator.startAnimating()
         cell.MovieName.text = data[indexPath.row].title
