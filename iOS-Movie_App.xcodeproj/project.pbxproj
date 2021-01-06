@@ -3,10 +3,11 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 50;
+	objectVersion = 51;
 	objects = {
 
 /* Begin PBXBuildFile section */
+		24042771258343BA001CCEE5 /* CoreData.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 24042770258343BA001CCEE5 /* CoreData.framework */; };
 		244784262574BF9B008E1CC1 /* MovieManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 244784252574BF9B008E1CC1 /* MovieManager.swift */; };
 		244784292575CD0B008E1CC1 /* MovieDetails.swift in Sources */ = {isa = PBXBuildFile; fileRef = 244784282575CD0B008E1CC1 /* MovieDetails.swift */; };
 		24566B1E2571111800E5EB09 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 24566B1D2571111800E5EB09 /* AppDelegate.swift */; };
@@ -19,12 +20,16 @@
 		24566B3A2571190000E5EB09 /* MovieCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 24566B382571190000E5EB09 /* MovieCollectionViewCell.swift */; };
 		24566B3B2571190000E5EB09 /* MovieCollectionViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 24566B392571190000E5EB09 /* MovieCollectionViewCell.xib */; };
 		246FADC9258205ED004E8BF5 /* CoreDataModel.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 246FADC7258205ED004E8BF5 /* CoreDataModel.xcdatamodeld */; };
+		246FADD7258220DF004E8BF5 /* RecentSearch+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 246FADD5258220DF004E8BF5 /* RecentSearch+CoreDataClass.swift */; };
+		246FADD8258220DF004E8BF5 /* RecentSearch+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 246FADD6258220DF004E8BF5 /* RecentSearch+CoreDataProperties.swift */; };
+		246FAE0425829242004E8BF5 /* DatabaseHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 246FAE0325829242004E8BF5 /* DatabaseHelper.swift */; };
 		24808E69257361B600642E61 /* MovieData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 24808E68257361B600642E61 /* MovieData.swift */; };
 		CAB50F3F0F773F97FF51C366 /* Pods_iOS_Movie_App.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DB09F69D821A4DD8E6CB13A1 /* Pods_iOS_Movie_App.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
 		07446CBFB5A9F2FFA851226D /* Pods-iOS-Movie_App.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-iOS-Movie_App.debug.xcconfig"; path = "Target Support Files/Pods-iOS-Movie_App/Pods-iOS-Movie_App.debug.xcconfig"; sourceTree = "<group>"; };
+		24042770258343BA001CCEE5 /* CoreData.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreData.framework; path = System/Library/Frameworks/CoreData.framework; sourceTree = SDKROOT; };
 		244784252574BF9B008E1CC1 /* MovieManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MovieManager.swift; sourceTree = "<group>"; };
 		244784282575CD0B008E1CC1 /* MovieDetails.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MovieDetails.swift; sourceTree = "<group>"; };
 		24566B1A2571111800E5EB09 /* iOS-Movie_App.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "iOS-Movie_App.app"; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -39,6 +44,9 @@
 		24566B382571190000E5EB09 /* MovieCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MovieCollectionViewCell.swift; sourceTree = "<group>"; };
 		24566B392571190000E5EB09 /* MovieCollectionViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = MovieCollectionViewCell.xib; sourceTree = "<group>"; };
 		246FADC8258205ED004E8BF5 /* CoreDataModel.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = CoreDataModel.xcdatamodel; sourceTree = "<group>"; };
+		246FADD5258220DF004E8BF5 /* RecentSearch+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = "RecentSearch+CoreDataClass.swift"; path = "iOS-Movie_App/CoreDataModel/RecentSearch+CoreDataClass.swift"; sourceTree = SOURCE_ROOT; };
+		246FADD6258220DF004E8BF5 /* RecentSearch+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = "RecentSearch+CoreDataProperties.swift"; path = "iOS-Movie_App/CoreDataModel/RecentSearch+CoreDataProperties.swift"; sourceTree = SOURCE_ROOT; };
+		246FAE0325829242004E8BF5 /* DatabaseHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DatabaseHelper.swift; sourceTree = "<group>"; };
 		24808E68257361B600642E61 /* MovieData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MovieData.swift; sourceTree = "<group>"; };
 		7CF0D1F1AF061C37C06A4365 /* Pods-iOS-Movie_App.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-iOS-Movie_App.release.xcconfig"; path = "Target Support Files/Pods-iOS-Movie_App/Pods-iOS-Movie_App.release.xcconfig"; sourceTree = "<group>"; };
 		DB09F69D821A4DD8E6CB13A1 /* Pods_iOS_Movie_App.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_iOS_Movie_App.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -49,6 +57,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				24042771258343BA001CCEE5 /* CoreData.framework in Frameworks */,
 				CAB50F3F0F773F97FF51C366 /* Pods_iOS_Movie_App.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -62,7 +71,6 @@
 				07446CBFB5A9F2FFA851226D /* Pods-iOS-Movie_App.debug.xcconfig */,
 				7CF0D1F1AF061C37C06A4365 /* Pods-iOS-Movie_App.release.xcconfig */,
 			);
-			name = Pods;
 			path = Pods;
 			sourceTree = "<group>";
 		};
@@ -89,13 +97,14 @@
 			children = (
 				24566B1D2571111800E5EB09 /* AppDelegate.swift */,
 				24566B1F2571111800E5EB09 /* SceneDelegate.swift */,
-				24566B33257114F600E5EB09 /* Controller */,
+				24BF28B725867F3900B40248 /* CoreDataModel */,
+				24808E6B257361EF00642E61 /* Model */,
 				24566B32257114EC00E5EB09 /* View */,
-				24566B262571111B00E5EB09 /* Assets.xcassets */,
+				24566B33257114F600E5EB09 /* Controller */,
 				24566B282571111B00E5EB09 /* LaunchScreen.storyboard */,
 				24566B2B2571111B00E5EB09 /* Info.plist */,
 				24566B352571152400E5EB09 /* Constants.swift */,
-				24808E6B257361EF00642E61 /* Model */,
+				24566B262571111B00E5EB09 /* Assets.xcassets */,
 			);
 			path = "iOS-Movie_App";
 			sourceTree = "<group>";
@@ -122,16 +131,27 @@
 		24808E6B257361EF00642E61 /* Model */ = {
 			isa = PBXGroup;
 			children = (
-				246FADC7258205ED004E8BF5 /* CoreDataModel.xcdatamodeld */,
 				24808E68257361B600642E61 /* MovieData.swift */,
 				244784252574BF9B008E1CC1 /* MovieManager.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
 		};
+		24BF28B725867F3900B40248 /* CoreDataModel */ = {
+			isa = PBXGroup;
+			children = (
+				246FADD5258220DF004E8BF5 /* RecentSearch+CoreDataClass.swift */,
+				246FADD6258220DF004E8BF5 /* RecentSearch+CoreDataProperties.swift */,
+				246FADC7258205ED004E8BF5 /* CoreDataModel.xcdatamodeld */,
+				246FAE0325829242004E8BF5 /* DatabaseHelper.swift */,
+			);
+			path = CoreDataModel;
+			sourceTree = "<group>";
+		};
 		A6B45D1D037152A1DAF6250E /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				24042770258343BA001CCEE5 /* CoreData.framework */,
 				DB09F69D821A4DD8E6CB13A1 /* Pods_iOS_Movie_App.framework */,
 			);
 			name = Frameworks;
@@ -256,10 +276,13 @@
 				24566B222571111800E5EB09 /* ViewController.swift in Sources */,
 				244784262574BF9B008E1CC1 /* MovieManager.swift in Sources */,
 				244784292575CD0B008E1CC1 /* MovieDetails.swift in Sources */,
+				246FAE0425829242004E8BF5 /* DatabaseHelper.swift in Sources */,
 				24566B1E2571111800E5EB09 /* AppDelegate.swift in Sources */,
 				246FADC9258205ED004E8BF5 /* CoreDataModel.xcdatamodeld in Sources */,
 				24566B3A2571190000E5EB09 /* MovieCollectionViewCell.swift in Sources */,
 				24566B202571111800E5EB09 /* SceneDelegate.swift in Sources */,
+				246FADD7258220DF004E8BF5 /* RecentSearch+CoreDataClass.swift in Sources */,
+				246FADD8258220DF004E8BF5 /* RecentSearch+CoreDataProperties.swift in Sources */,
 				24566B362571152400E5EB09 /* Constants.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -478,8 +501,7 @@
 				246FADC8258205ED004E8BF5 /* CoreDataModel.xcdatamodel */,
 			);
 			currentVersion = 246FADC8258205ED004E8BF5 /* CoreDataModel.xcdatamodel */;
-			name = CoreDataModel.xcdatamodeld;
-			path = ../../CoreDataModel.xcdatamodeld;
+			path = CoreDataModel.xcdatamodeld;
 			sourceTree = "<group>";
 			versionGroupType = wrapper.xcdatamodel;
 		};

@@ -1,7 +1,12 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="17192" systemVersion="19G73" minimumToolsVersion="Automatic" sourceLanguage="Swift" userDefinedModelVersionIdentifier="">
-    <entity name="RecentSearch" representedClassName=".SearchString" syncable="YES" codeGenerationType="class">
+    <entity name="RecentSearch" representedClassName=".RecentSearch" syncable="YES">
         <attribute name="item" attributeType="String"/>
+        <uniquenessConstraints>
+            <uniquenessConstraint>
+                <constraint value="item"/>
+            </uniquenessConstraint>
+        </uniquenessConstraints>
     </entity>
     <elements>
         <element name="RecentSearch" positionX="-36" positionY="9" width="128" height="58"/>

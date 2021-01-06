@@ -20,5 +20,3 @@ struct Constants {
         static let MovieDetails = "MovieDetails"
     }
 }
-
-
