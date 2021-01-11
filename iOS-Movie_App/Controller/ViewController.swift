@@ -126,7 +126,7 @@ guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: Constan
 // MARK: - Delegate Methods
 extension ViewController: UICollectionViewDelegate {
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        cellIndex = indexPath.row
+      //  cellIndex = indexPath.row
 guard let vc = self.storyboard?.instantiateViewController(identifier: Constants.Controllers.MovieDetails) as? MovieDetails else {return}
         vc.movieDetail = data[indexPath.row]
         self.navigationController?.pushViewController(vc, animated: true)
